@@ -1,8 +1,7 @@
 class CoursesController < ApplicationController
   def index
     @courses = Course.all.order({ :created_at => :desc })
-
-    render({ :template => "courses/index" })
+render({ :template => "courses/index" })
   end
 
   def show

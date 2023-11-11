@@ -5,30 +5,31 @@ class DepartmentsController < ApplicationController
     render({ :template => "departments/index" })
   end
 
-  def show
-    the_id = params.fetch("path_id")
-    @department = Department.where({:id => the_id })
+  def create
+    department_name = params.fetch("the_name") 
+    new_department = Department.new
+    if department_name == nil
+      new_department.name = department_name
+    else new_department.name = ""
+    end
+    
+    new_department.save
 
-    render({ :template => "departments/show" })
+    redirect_to("/departments")
   end
 
-  def create
-    @department = Department.new
-    @department.name = params.fetch("query_name")
-
-    if @department.valid?
-      @department.save
-      redirect_to("/departments", { :notice => "Department created successfully." })
-    else
-      redirect_to("/departments", { :notice => "Department failed to create successfully." })
-    end
+  
+  def show
+    the_id = params.fetch("path_id")
+    @department = Department.where({:id => the_id }).at(0)
+    render({ :template => "departments/show" })
   end
 
   def update
     the_id = params.fetch("path_id")
     @department = Department.where({ :id => the_id }).at(0)
 
-    @department.name = params.fetch("query_name")
+    @department.name = params.fetch("the_name")
 
     if @department.valid?
       @department.save
